@@ -6,10 +6,10 @@ import JournalApplication.example.Journal_App.servicee.JournalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/journal")
+@RequestMapping("/api/users/{userId}/journal")
 public class JournalController {
 
 
@@ -18,9 +18,10 @@ public class JournalController {
     private JournalService journalService;
 
     @GetMapping
-    public List<JournalEntry> getAllEntries(){
-        return journalService.getAllEntries();
+    public Optional<JournalEntry> getAllEntriesByUserId(@PathVariable String userId){
+        return journalService.getAllEntriesByUserId(userId);
     }
+
 
     @GetMapping("/{id}")
     public JournalEntry getEntryById(@PathVariable String id) {
@@ -29,8 +30,8 @@ public class JournalController {
 
 
     @PostMapping
-    public JournalEntry createEntry(@RequestBody  JournalEntry journalEntry){
-        return journalService.createEntry(journalEntry);
+    public JournalEntry createEntry(@PathVariable String userId,@RequestBody  JournalEntry journalEntry){
+        return journalService.createEntry(userId,journalEntry);
     }
 
     @PutMapping("/{id}")
